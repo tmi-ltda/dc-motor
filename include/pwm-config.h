@@ -2,3 +2,5 @@
 
 #define PWM_FREQUENCY 5000
 #define PWM_RESOLUTION 12
+#define MAX_SPEED 4095
+#define MIN_SPEED 0
