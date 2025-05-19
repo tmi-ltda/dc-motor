@@ -10,7 +10,7 @@ class DCMotor {
     uint16_t _speed;
 
   public:
-    DCMotor(uint8_t _pin1, uint8_t _pin2) : _speed(4095) {
+    DCMotor(uint8_t pin1, uint8_t pin2) : _pin1(pin1), _pin2(pin2), _speed(4095) {
       ledcAttach(_pin1, PWM_FREQUENCY, PWM_RESOLUTION);
       ledcAttach(_pin2, PWM_FREQUENCY, PWM_RESOLUTION);
 
