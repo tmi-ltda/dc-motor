@@ -13,7 +13,7 @@ class DCMotor {
 
   public:
     DCMotor(uint8_t pin1, uint8_t pin2)
-    : _pin1(pin1), _pin2(pin2), _forward_speed(MAX_SPEED), _backward_speed(MIN_SPEED), _max_power(1.0f) {
+    : _pin1(pin1), _pin2(pin2), _forward_speed(MIN_SPEED), _backward_speed(MIN_SPEED), _max_power(1.0f) {
       ledcAttach(_pin1, PWM_FREQUENCY, PWM_RESOLUTION);
       ledcAttach(_pin2, PWM_FREQUENCY, PWM_RESOLUTION);
 
