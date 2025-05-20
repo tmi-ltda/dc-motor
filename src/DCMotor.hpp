@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/pwm-config.h"
+#include <pwm-config.h>
 #include <stdint.h>
 #include <Arduino.h>
 
