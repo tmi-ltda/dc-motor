@@ -7,7 +7,7 @@
 class DCMotor {
   private:
     uint8_t _pin1, _pin2;
-    uint16_t _forward_speed, _backward_speed;
+    int16_t _forward_speed, _backward_speed;
     float _max_power;
     unsigned long last_call = 0;
 
@@ -21,41 +21,41 @@ class DCMotor {
     }
 
     void forward() {
-      ledcWrite(_pin1, accelerate(_forward_speed));
-      ledcWrite(_pin2, decelerate(_backward_speed));
+      accelerate(_forward_speed);
+      decelerate(_backward_speed);
+      ledcWrite(_pin1, _forward_speed * _max_power);
+      ledcWrite(_pin2, _backward_speed * _max_power);
     }
 
     void backward() {
-      ledcWrite(_pin1, decelerate(_forward_speed));
-      ledcWrite(_pin2, accelerate(_backward_speed));
+      decelerate(_forward_speed);
+      accelerate(_backward_speed);
+      ledcWrite(_pin1, _forward_speed * _max_power);
+      ledcWrite(_pin2, _backward_speed * _max_power);
     }
 
     void stop() {
-      ledcWrite(_pin1, decelerate(_forward_speed));
-      ledcWrite(_pin2, accelerate(_backward_speed));
+      decelerate(_forward_speed);
+      decelerate(_backward_speed);
+      ledcWrite(_pin1, _forward_speed * _max_power);
+      ledcWrite(_pin2, _backward_speed * _max_power);
     }
 
     void setMaxPower(float power) {
       _max_power = min(power, 1.0f);
     }
 
-    uint16_t accelerate(uint16_t &speed) {
-      if (last_call - millis() >= 10) {
+    void accelerate(int16_t &speed) {
+      if (millis() - last_call >= 10) {
+        speed = min((int16_t)MAX_SPEED, speed += ACCELERATION);
         last_call = millis();
-
-        return speed = min(speed + 1, MAX_SPEED) * _max_power;
       }
-
-      return speed;
     }
 
-    uint16_t decelerate(uint16_t &speed) {
-      if (last_call - millis() >= 10) {
+    void decelerate(int16_t &speed) {
+      if (millis() - last_call >= 10) {
+        speed = max(speed -= ACCELERATION, (int16_t)MIN_SPEED);
         last_call = millis();
-
-        return speed = max(speed - 1, MIN_SPEED) * _max_power;
       }
-
-      return speed;
     }
 };

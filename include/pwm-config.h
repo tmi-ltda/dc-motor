@@ -4,3 +4,4 @@
 #define PWM_RESOLUTION 12
 #define MAX_SPEED 4095
 #define MIN_SPEED 0
+#define ACCELERATION 100
