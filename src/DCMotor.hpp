@@ -7,13 +7,13 @@
 class DCMotor {
   private:
     uint8_t _pin1, _pin2;
-    int16_t _forward_speed, _backward_speed;
+    uint16_t _speed;
     float _max_power;
     unsigned long last_call = 0;
 
   public:
     DCMotor(uint8_t pin1, uint8_t pin2)
-    : _pin1(pin1), _pin2(pin2), _forward_speed(MAX_SPEED), _backward_speed(MAX_SPEED), _max_power(1.0) {
+    : _pin1(pin1), _pin2(pin2), _speed(MAX_SPEED), _max_power(1.0) {
       ledcAttach(_pin1, PWM_FREQUENCY, PWM_RESOLUTION);
       ledcAttach(_pin2, PWM_FREQUENCY, PWM_RESOLUTION);
 
@@ -21,23 +21,23 @@ class DCMotor {
     }
 
     void forward() {
-      ledcWrite(_pin1, _forward_speed * _max_power);
+      ledcWrite(_pin1, _speed * _max_power);
       ledcWrite(_pin2, 0);
     }
 
     void backward() {
       ledcWrite(_pin1, 0);
-      ledcWrite(_pin2, _backward_speed * _max_power);
+      ledcWrite(_pin2, _speed * _max_power);
     }
 
     void halfForward() {
-      ledcWrite(_pin1, _forward_speed * _max_power / 2);
+      ledcWrite(_pin1, _speed * _max_power / 2);
       ledcWrite(_pin2, 0);
     }
 
     void halfBackward() {
       ledcWrite(_pin1, 0);
-      ledcWrite(_pin2, _backward_speed * _max_power / 2);
+      ledcWrite(_pin2, _speed * _max_power / 2);
     }
 
     void stop() {
@@ -65,5 +65,10 @@ class DCMotor {
       }
 
       return speed;
+    }
+
+    void setSpeed(uint16_t speed) {
+      if (speed < 0) _speed = max((uint16_t)MIN_SPEED, speed);
+      else _speed = min((uint16_t)MAX_SPEED, speed);
     }
 };
