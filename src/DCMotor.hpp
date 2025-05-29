@@ -1,8 +1,13 @@
 #pragma once
 
-#include <pwm-config.h>
 #include <stdint.h>
 #include <Arduino.h>
+
+#define PWM_FREQUENCY 5000
+#define PWM_RESOLUTION 12
+#define MAX_SPEED 4095
+#define MIN_SPEED 0
+#define ACCELERATION (MAX_SPEED / 10)
 
 class DCMotor {
   private:
